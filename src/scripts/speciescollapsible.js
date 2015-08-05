@@ -36,8 +36,8 @@ d3.json("data/forestSpecies.json", function(error,jsonData){
 function createDG(source) {
 
   // Compute the new tree layout.
-  var nodes = cluster.nodes(root),
-      links = cluster.links(nodes);
+  var nodes = cluster.nodes(root);
+  var pathlinks = cluster.links(nodes);
 
   // Normalize for fixed-depth.
   nodes.forEach(function(d) { d.y = d.depth * 80; });
@@ -88,7 +88,7 @@ function createDG(source) {
 
   // Update the links…
   var link = svg.selectAll("path.link")
-      .data(links, function(d) { return d.target.id; });
+      .data(pathlinks, function(d) { return d.target.id; });
 
   // Enter any new links at the parent's previous position.
   link.enter().insert("path", "g")
