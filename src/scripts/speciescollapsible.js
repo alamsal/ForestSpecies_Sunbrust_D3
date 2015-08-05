@@ -17,11 +17,11 @@ var cluster = d3.layout.cluster()
 var diagonal = d3.svg.diagonal.radial()
     .projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
 
-var svgRoot = d3.select(document.getElementById("speciescollapsible")).append("svg")
+var svgRoot = d3.select(document.getElementById("speciescollapsible")).append("svg:svg")
     .attr("width", width )
-    .attr("height", height )
-    .append("g")
-    .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
+    .attr("height", height );
+    //.append("g")
+    //.attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
 
 // Add the clipping path
 svgRoot.append("svg:clipPath").attr("id", "clipper-path")
@@ -29,9 +29,9 @@ svgRoot.append("svg:clipPath").attr("id", "clipper-path")
     .attr('id', 'clip-rect-anim');
 
 var layoutRoot = svgRoot
-    .call(d3.behavior.zoom().center([radius,radius]).scale(0.9).scaleExtent([0.1, 3]).on("zoom", zoom)).on("dblclick.zoom", null)
+  .call(d3.behavior.zoom().center([radius,radius]).scale(0.9).scaleExtent([0.1, 3]).on("zoom", zoom)).on("dblclick.zoom", null)
   .append("svg:g")
-    .attr("class", "container")
+  .attr("class", "container")
   .attr("transform", "translate(" + radius+ "," + radius + ")").append("g");
 
 
