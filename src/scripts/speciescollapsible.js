@@ -16,7 +16,7 @@ var cluster = d3.layout.cluster()
 var diagonal = d3.svg.diagonal.radial()
     .projection(function(d) { return [d.y, d.x / 180 * Math.PI]; });
 
-var svg = d3.select(document.getElementById("speciescollapsible")).append("svg")
+var svgRoot = d3.select(document.getElementById("speciescollapsible")).append("svg")
     .attr("width", width )
     .attr("height", height )
     .append("g")
@@ -43,7 +43,7 @@ function createDG(source) {
   nodes.forEach(function(d) { d.y = d.depth * 80; });
 
   // Update the nodes…
-  var node = svg.selectAll("g.node")
+  var node = svgRoot.selectAll("g.node")
       .data(nodes, function(d) { return d.id || (d.id = ++i); });
 
   // Enter any new nodes at the parent's previous position.
@@ -87,7 +87,7 @@ function createDG(source) {
       .style("fill-opacity", 1e-6);
 
   // Update the links…
-  var link = svg.selectAll("path.link")
+  var link = svgRoot.selectAll("path.link")
       .data(pathlinks, function(d) { return d.target.id; });
 
   // Enter any new links at the parent's previous position.
