@@ -22,9 +22,6 @@ var svg = d3.select(document.getElementById("speciescollapsible")).append("svg")
     .append("g")
     .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
 
-
-
-
 d3.json("data/forestSpecies.json", function(error,jsonData){
 
 	if(error) return console.warn(error);
@@ -52,7 +49,6 @@ function createDG(source) {
   // Enter any new nodes at the parent's previous position.
   var nodeEnter = node.enter().append("g")
       .attr("class", "node")
-      //.attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
       .on("click", click);
 
   nodeEnter.append("circle")
@@ -63,7 +59,6 @@ function createDG(source) {
       .attr("x", 10)
       .attr("dy", ".35em")
       .attr("text-anchor", "start")
-      //.attr("transform", function(d) { return d.x < 180 ? "translate(0)" : "rotate(180)translate(-" + (d.name.length * 8.5)  + ")"; })
       .text(function(d) { return d.name; })
       .style("fill-opacity", 1e-6);
 
@@ -83,7 +78,6 @@ function createDG(source) {
   // TODO: appropriate transform
   var nodeExit = node.exit().transition()
       .duration(duration)
-      //.attr("transform", function(d) { return "diagonal(" + source.y + "," + source.x + ")"; })
       .remove();
 
   nodeExit.select("circle")
