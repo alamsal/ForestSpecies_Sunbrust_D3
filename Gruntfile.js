@@ -10,7 +10,8 @@ module.exports = function(grunt) {
     			livereload:true,          
           hostname:'*',
     			base: 'src',
-    			open: 'http://localhost:8000',
+				port: 9000,
+    			open: 'http://localhost:9000',
           middleware: function(connect,options,middlewares){
             middlewares.unshift(function(req,res,next){
               if(req.url !== "/echo") return next();
