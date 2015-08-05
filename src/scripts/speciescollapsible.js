@@ -1,4 +1,5 @@
 var diameter = 800;
+var radius = diameter/2;
 
 var margin = {top: 20, right: 120, bottom: 20, left: 120},
     width = diameter,
@@ -22,6 +23,19 @@ var svgRoot = d3.select(document.getElementById("speciescollapsible")).append("s
     .append("g")
     .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
 
+// Add the clipping path
+svgRoot.append("svg:clipPath").attr("id", "clipper-path")
+    .append("svg:rect")
+    .attr('id', 'clip-rect-anim');
+
+var layoutRoot = svgRoot
+    .call(d3.behavior.zoom().center([radius,radius]).scale(0.9).scaleExtent([0.1, 3]).on("zoom", zoom)).on("dblclick.zoom", null)
+  .append("svg:g")
+    .attr("class", "container")
+  .attr("transform", "translate(" + radius+ "," + radius + ")").append("g");
+
+
+
 d3.json("data/forestSpecies.json", function(error,jsonData){
 
 	if(error) return console.warn(error);
@@ -38,6 +52,10 @@ function createDG(source) {
   // Compute the new tree layout.
   var nodes = cluster.nodes(root);
   var pathlinks = cluster.links(nodes);
+
+
+
+
 
   // Normalize for fixed-depth.
   nodes.forEach(function(d) { d.y = d.depth * 80; });
@@ -139,4 +157,9 @@ function collapse(d) {
       d._children.forEach(collapse);
       d.children = null;
     }
+}
+
+
+function zoom() {
+   layoutRoot.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
 }
