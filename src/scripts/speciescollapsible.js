@@ -9,7 +9,7 @@ var i = 0,
 
 var root;
 
-var tree = d3.layout.cluster()
+var cluster = d3.layout.cluster()
     .size([360, diameter / 2 - 80])
     .separation(function(a, b) { return (a.parent == b.parent ? 1 : 10) / a.depth; });
 
@@ -36,8 +36,8 @@ d3.json("data/forestSpecies.json", function(error,jsonData){
 function createDG(source) {
 
   // Compute the new tree layout.
-  var nodes = tree.nodes(root),
-      links = tree.links(nodes);
+  var nodes = cluster.nodes(root),
+      links = cluster.links(nodes);
 
   // Normalize for fixed-depth.
   nodes.forEach(function(d) { d.y = d.depth * 80; });
