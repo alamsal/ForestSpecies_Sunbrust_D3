@@ -19,9 +19,9 @@ var diagonal = d3.svg.diagonal.radial()
 
 var svgRoot = d3.select(document.getElementById("speciescollapsible")).append("svg:svg")
     .attr("width", width )
-    .attr("height", height );
-    //.append("g")
-    //.attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
+    .attr("height", height )
+    .append("g")
+    .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
 
 // Add the clipping path
 svgRoot.append("svg:clipPath").attr("id", "clipper-path")
