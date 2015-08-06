@@ -8,8 +8,6 @@ var x = d3.scale.linear()
 var y = d3.scale.sqrt()
     .range([0, radius]);
 
-var color = d3.scale.category20c();
-
 var svg = d3.select("body").append("svg")
     .attr("width", width)
     .attr("height", height)
@@ -37,7 +35,22 @@ d3.json("data/forestSpecies.json", function(error, root) {
 
   var path = g.append("path")
     .attr("d", arc)
-    .style("fill", function(d) { return color((d.children ? d : d.parent).name); })
+    .style("fill", function(d) {
+      if(d.depth == 1){
+        var woodcolor;
+        if(d.name=="Hardwoods"){
+          woodcolor = "#816854";
+        }else{
+          woodcolor = "#C3B9A0";
+        }
+        return woodcolor;
+      }else if(d.depth>1){
+        return d.color;
+      }else{
+        return "gray";
+      }
+
+    })
     .on("click", click);
 
   var text = g.append("text")
