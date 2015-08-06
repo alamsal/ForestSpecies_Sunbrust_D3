@@ -74,3 +74,8 @@
   font-weight: bold;
   font-family: arial;
 }
+
+#vis{
+  width: 950px;
+  height: 950px;
+}
