@@ -64,3 +64,13 @@
   stroke: #ccc;
   stroke-width: 1.5px;
 }
+
+
+
+/*Wheel's CSS*/
+
+.wheel-text{
+  font-size: 12px;
+  font-weight: bold;
+  font-family: arial;
+}

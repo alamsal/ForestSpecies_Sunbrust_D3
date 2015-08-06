@@ -22,7 +22,7 @@ var arc = d3.svg.arc()
     .startAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x))); })
     .endAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x + d.dx))); })
     .innerRadius(function(d) { return Math.max(0, y(d.y)); })
-    .outerRadius(function(d) { return Math.max(0, y(d.y+ d.dy)); });
+    .outerRadius(function(d) { return Math.max(0, y(d.y*2+ d.dy)); });
 
 // Keep track of the node that is currently being displayed as the root.
 var node;
@@ -59,13 +59,17 @@ d3.json("data/forestSpecies.json", function(error, root) {
     .attr("x", function(d) { return y(d.y); })
     .attr("dx", "6") // margin
     .attr("dy", ".35em") // vertical-align
+    .attr("class","wheel-text")
     .text(function(d)
     {
       if (d.depth == 2)
       {
+
         return d.alias;
       }
+
       return d.name;
+
     });
 
 
@@ -104,12 +108,6 @@ d3.json("data/forestSpecies.json", function(error, root) {
 });
 
 d3.select(self.frameElement).style("height", height + "px");
-
-// Setup for switching data: stash the old values for transition.
-function stash(d) {
-  d.x0 = d.x;
-  d.dx0 = d.dx;
-}
 
 // When switching data: interpolate the arcs in data space.
 function arcTweenData(a, i) {
