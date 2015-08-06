@@ -22,7 +22,7 @@ var arc = d3.svg.arc()
     .startAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x))); })
     .endAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x + d.dx))); })
     .innerRadius(function(d) { return Math.max(0, y(d.y)); })
-    .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)); });
+    .outerRadius(function(d) { return Math.max(0, y(d.y+ d.dy)); });
 
 // Keep track of the node that is currently being displayed as the root.
 var node;
@@ -35,6 +35,7 @@ d3.json("data/forestSpecies.json", function(error, root) {
 
   var path = g.append("path")
     .attr("d", arc)
+    .style("stroke","snow")
     .style("fill", function(d) {
       if(d.depth == 1){
         var woodcolor;
