@@ -45,7 +45,16 @@ d3.json("data/forestSpecies.json", function(error, root) {
     .attr("x", function(d) { return y(d.y); })
     .attr("dx", "6") // margin
     .attr("dy", ".35em") // vertical-align
-    .text(function(d) { return d.name; });
+    .text(function(d)
+    {
+      if (d.depth == 2)
+      {
+        return d.alias;
+      }
+      return d.name;
+    });
+
+
 
 
   d3.selectAll("input").on("change", function change() {
