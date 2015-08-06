@@ -1,12 +1,9 @@
-var width = 960,
-    height = 700,
+var width = 750,
+    height = 750,
     radius = Math.min(width, height) / 2;
 
-var x = d3.scale.linear()
-    .range([0, 2 * Math.PI]);
-
-var y = d3.scale.sqrt()
-    .range([0, radius]);
+var x = d3.scale.linear().range([0, 2* Math.PI]);
+var y = d3.scale.pow().exponent(1.9).domain([0,1]).range([0, radius*1.2]);
 
 var svg = d3.select("body").append("svg")
     .attr("width", width)
@@ -22,7 +19,7 @@ var arc = d3.svg.arc()
     .startAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x))); })
     .endAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x + d.dx))); })
     .innerRadius(function(d) { return Math.max(0, y(d.y)); })
-    .outerRadius(function(d) { return Math.max(0, y(d.y*2+ d.dy)); });
+    .outerRadius(function(d) { return Math.max(0, y(d.y+ d.dy)); });
 
 // Keep track of the node that is currently being displayed as the root.
 var node;
