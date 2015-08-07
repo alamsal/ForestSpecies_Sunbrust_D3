@@ -2,7 +2,7 @@ var width = 840,
     height = width,
     radius = width / 2,
     x = d3.scale.linear().range([0, 2 * Math.PI]),
-    y = d3.scale.pow().exponent(2.5).domain([0, 1]).range([0, radius]),
+    y = d3.scale.linear().range([0, radius]),
     padding = 5,
     duration = 1000;
 
@@ -119,7 +119,20 @@ function isParentOf(p, c) {
 }
 
 function colour(d) {
-  return d.color || "#fff";
+  if(d.depth == 1){
+        var woodcolor;
+        if(d.name=="Hardwoods"){
+          woodcolor = "#816854";
+        }else{
+          woodcolor = "#C3B9A0";
+        }
+        return woodcolor;
+      }else if(d.depth>1){
+        return d.color;
+      }
+      else{
+        return "gray";
+      }
 }
 
 // Interpolate the scales!
