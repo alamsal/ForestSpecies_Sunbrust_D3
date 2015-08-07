@@ -2,7 +2,7 @@ var width = 840,
     height = width,
     radius = width / 2,
     x = d3.scale.linear().range([0, 2 * Math.PI]),
-    y = d3.scale.pow().exponent(1.3).domain([0, 1]).range([0, radius]),
+    y = d3.scale.pow().exponent(2.5).domain([0, 1]).range([0, radius]),
     padding = 5,
     duration = 1000;
 
@@ -22,7 +22,7 @@ div.append("p")
 
 var partition = d3.layout.partition()
     .sort(null)
-    .value(function(d) { return 5.8 - d.depth; });
+    .value(function(d) { return d.depth; });
 
 var arc = d3.svg.arc()
     .startAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x))); })
@@ -38,18 +38,19 @@ d3.json("data/forestSpecies.json", function(error, json) {
   path.enter().append("path")
       .attr("id", function(d, i) { return "path-" + i; })
       .attr("d", arc)
-      .attr("fill-rule", "evenodd")
+      //.attr("fill-rule", "evenodd")
       .style("fill", colour)
       .on("click", click);
 
   var text = vis.selectAll("text").data(nodes);
   var textEnter = text.enter().append("text")
       .style("fill-opacity", 1)
+      .attr("class","wheel-text")
       .style("fill", function(d) {
         return brightness(d3.rgb(colour(d))) < 125 ? "#eee" : "#000";
       })
       .attr("text-anchor", function(d) {
-        return x(d.x + d.dx / 2) > Math.PI ? "end" : "start";
+        return x(d.x + d.dx ) > Math.PI ? "end" : "start";
       })
       .attr("dy", ".2em")
       .attr("transform", function(d) {
@@ -61,11 +62,20 @@ d3.json("data/forestSpecies.json", function(error, json) {
       .on("click", click);
   textEnter.append("tspan")
       .attr("x", 0)
-      .text(function(d) { return d.depth ? d.name.split(" ")[0] : ""; });
+      .text(function(d) {
+        if(d.depth < 2){
+          return d.depth ? d.name.split("/")[0] : "";
+        }
+
+        //return d.name;
+      });
   textEnter.append("tspan")
       .attr("x", 0)
       .attr("dy", "1em")
-      .text(function(d) { return d.depth ? d.name.split(" ")[1] || "" : ""; });
+      .text(function(d) {
+        return d.name;
+       //return d.depth ? d.name.split("/")[1] || "" : "";
+      });
 
   function click(d) {
     path.transition()
@@ -109,15 +119,7 @@ function isParentOf(p, c) {
 }
 
 function colour(d) {
-  if (d.children) {
-    // There is a maximum of two children!
-    var colours = d.children.map(colour),
-        a = d3.hsl(colours[0]),
-        b = d3.hsl(colours[1]);
-    // L*a*b* might be better here...
-    return d3.hsl((a.h + b.h) / 2, a.s * 1.2, a.l / 1.2);
-  }
-  return d.colour || "#fff";
+  return d.color || "#fff";
 }
 
 // Interpolate the scales!
