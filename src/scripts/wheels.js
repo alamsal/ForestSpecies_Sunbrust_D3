@@ -46,6 +46,7 @@ d3.json("data/forestSpecies.json", function(error, json) {
   var textEnter = text.enter().append("text")
       .style("fill-opacity", 1)
       .attr("class","wheel-text")
+      .attr("visibility",function(d) { return d.dx < 0.01? "hidden" : "visible"})
       .style("fill", function(d) {
         return brightness(d3.rgb(colour(d))) < 125 ? "#eee" : "#000";
       })
@@ -54,38 +55,46 @@ d3.json("data/forestSpecies.json", function(error, json) {
       })
       .attr("dy", ".2em")
       .attr("transform", function(d) {
-        var multiline = (d.name || "").split(" ").length > 1,
+        var multiline = (d.name || "").split("/").length > 1,
             angle = x(d.x + d.dx / 2) * 180 / Math.PI - 90,
             rotate = angle + (multiline ? -.5 : 0);
         return "rotate(" + rotate + ")translate(" + (y(d.y) + padding) + ")rotate(" + (angle > 90 ? -180 : 0) + ")";
       })
       .on("click", click);
+
   textEnter.append("tspan")
       .attr("x", 0)
       .text(function(d) {
-        if(d.depth < 2){
-          return d.depth ? d.name.split("/")[0] : "";
+        if(d.depth === 2)
+        {
+          return d.alias;
         }
-
-        //return d.name;
+        return d.depth ? d.name.split("/")[0] : "";
       });
   textEnter.append("tspan")
       .attr("x", 0)
       .attr("dy", "1em")
       .text(function(d) {
-        return d.name;
-       //return d.depth ? d.name.split("/")[1] || "" : "";
+         return d.depth ? d.name.split("/")[1] || "" : "";
+      });
+    textEnter.append("tspan")
+      .attr("x", 0)
+      .attr("dy", "1em")
+      .text(function(d) {
+         return d.depth ? d.name.split("/")[2] || "" : "";
       });
 
   function click(d) {
+
+    var total = d.dx;
+
     path.transition()
       .duration(duration)
       .attrTween("d", arcTween(d));
 
     // Somewhat of a hack as we rely on arcTween updating the scales.
-    text.style("visibility", function(e) {
-          return isParentOf(d, e) ? null : d3.select(this).style("visibility");
-        })
+    text
+    .attr("visibility",function(d) { return d.dx/total < 0.01? "hidden" : "visible"})
       .transition()
         .duration(duration)
         .attrTween("text-anchor", function(d) {
