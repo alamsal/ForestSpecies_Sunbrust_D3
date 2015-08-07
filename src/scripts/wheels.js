@@ -13,12 +13,8 @@ div.select("img").remove();
 var vis = div.append("svg")
     .attr("width", width + padding * 2)
     .attr("height", height + padding * 2)
-  .append("g")
+    .append("g")
     .attr("transform", "translate(" + [radius + padding, radius + padding] + ")");
-
-div.append("p")
-    .attr("id", "intro")
-    .text("Click to zoom!");
 
 var partition = d3.layout.partition()
     .sort(null)
@@ -38,7 +34,7 @@ d3.json("data/forestSpecies.json", function(error, json) {
   path.enter().append("path")
       .attr("id", function(d, i) { return "path-" + i; })
       .attr("d", arc)
-      //.attr("fill-rule", "evenodd")
+      .style("stroke","snow")
       .style("fill", colour)
       .on("click", click);
 
@@ -47,9 +43,7 @@ d3.json("data/forestSpecies.json", function(error, json) {
       .style("fill-opacity", 1)
       .attr("class","wheel-text")
       .attr("visibility",function(d) { return d.dx < 0.01? "hidden" : "visible"})
-      .style("fill", function(d) {
-        return brightness(d3.rgb(colour(d))) < 125 ? "#eee" : "#000";
-      })
+
       .attr("text-anchor", function(d) {
         return x(d.x + d.dx ) > Math.PI ? "end" : "start";
       })
@@ -159,7 +153,3 @@ function maxY(d) {
   return d.children ? Math.max.apply(Math, d.children.map(maxY)) : d.y + d.dy;
 }
 
-// http://www.w3.org/WAI/ER/WD-AERT/#color-contrast
-function brightness(rgb) {
-  return rgb.r * .299 + rgb.g * .587 + rgb.b * .114;
-}
